@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899-12-30 00:00:00.000.104,C:\Users\Amar\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\Amar\Documents\Embarcadero\Studio\Projects\Dic.dproj</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.719,C:\Users\Amar\Documents\Embarcadero\Studio\Projects\Unit1.pas=D:\Delphi\programs\Dic\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.719,D:\Delphi\programs\Dic\Unit1.dfm=C:\Users\Amar\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
     <Transaction>1899-12-30 00:00:00.000.876,=C:\Users\Amar\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.719,C:\Users\Amar\Documents\Embarcadero\Studio\Projects\Unit1.dfm=D:\Delphi\programs\Dic\Unit1.dfm</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.856,C:\Users\Amar\Documents\Embarcadero\Studio\Projects\Dic.dproj=D:\Delphi\programs\Dic\Dic.dproj</Transaction>
-    <Transaction>2024-08-11 06:13:27.574,D:\Delphi\programs\Lang\Dic\Dictionary.dproj=D:\Delphi\programs\Lang\Dic\Dic.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.719,D:\Delphi\programs\Dic\Unit1.pas=C:\Users\Amar\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.574,D:\Delphi\programs\Lang\Dic\Dic.dproj=D:\Delphi\programs\Lang\Dic\Dictionary.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.856,D:\Delphi\programs\Dic\Dic.dproj=C:\Users\Amar\Documents\Embarcadero\Studio\Projects\Dic.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.104,C:\Users\Amar\Documents\Embarcadero\Studio\Projects\Dic.dproj=C:\Users\Amar\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
   </Transactions>
 </BorlandProject>

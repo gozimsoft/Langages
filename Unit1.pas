@@ -118,6 +118,7 @@ begin
   MemWord.Clear;
   MemWordTranslate.Clear;
 
+  SaveDic;
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -136,6 +137,8 @@ begin
   LBAllWord.Items.Strings[LBAllWord.ItemIndex] := MemWord.Text;
   LBAllWordTranslate.Items.Strings[LBAllWordTranslate.ItemIndex] :=
     MemWordTranslate.Text;
+
+  SaveDic;
 end;
 
 procedure TForm1.Button3Click(Sender: TObject);
@@ -147,6 +150,8 @@ procedure TForm1.Button4Click(Sender: TObject);
 begin
   LBAllWord.Items.Delete(LBAllWord.ItemIndex);
   LBAllWordTranslate.Items.Delete(LBAllWordTranslate.ItemIndex);
+
+  SaveDic;
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);
@@ -243,6 +248,7 @@ begin
           try
             IniMem.ReadSections(CbLang.Items);
             CbLang.ItemIndex := 0;
+            LoadLang;
           finally
             IniMem.Free;
           end;
@@ -346,7 +352,7 @@ begin
   finally
     str.Free;
   end;
-  ShowMessage(' „ «·Õ›Ÿ');
+  // ShowMessage(' „ «·Õ›Ÿ');
 end;
 
 end.

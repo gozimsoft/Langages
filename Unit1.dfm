@@ -25,8 +25,6 @@ object Form1: TForm1
     ItemHeight = 13
     TabOrder = 0
     OnClick = LBAllWordClick
-    ExplicitTop = 148
-    ExplicitHeight = 375
   end
   object LBAllWordTranslate: TListBox
     AlignWithMargins = True
@@ -38,8 +36,6 @@ object Form1: TForm1
     ItemHeight = 13
     TabOrder = 1
     OnClick = LBAllWordTranslateClick
-    ExplicitTop = 148
-    ExplicitHeight = 375
   end
   object Edit1: TEdit
     AlignWithMargins = True
@@ -167,7 +163,6 @@ object Form1: TForm1
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 6
-    ExplicitTop = 101
     object Button6: TButton
       AlignWithMargins = True
       Left = 84
@@ -227,8 +222,6 @@ object Form1: TForm1
     Font.Style = []
     ParentFont = False
     TabOrder = 7
-    ExplicitLeft = 8
-    ExplicitTop = 57
     object Edit2: TEdit
       AlignWithMargins = True
       Left = 3
@@ -239,9 +232,7 @@ object Form1: TForm1
       TabOrder = 1
       Visible = False
       OnDblClick = Edit2DblClick
-      ExplicitLeft = 6
-      ExplicitTop = 19
-      ExplicitHeight = 43
+      ExplicitHeight = 27
     end
     object CbLang: TComboBox
       AlignWithMargins = True
@@ -259,9 +250,6 @@ object Form1: TForm1
       TabOrder = 0
       OnChange = CbLangChange
       OnDblClick = CbLangDblClick
-      ExplicitLeft = 4
-      ExplicitTop = 4
-      ExplicitWidth = 333
     end
   end
 end

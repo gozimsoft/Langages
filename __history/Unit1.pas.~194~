@@ -21,13 +21,15 @@ type
     Button2: TButton;
     Button4: TButton;
     Button5: TButton;
-    CbLang: TComboBox;
     Panel4: TPanel;
     Button6: TButton;
     Button7: TButton;
     Button8: TButton;
     Button3: TButton;
     Button9: TButton;
+    Panel5: TPanel;
+    CbLang: TComboBox;
+    Edit2: TEdit;
     procedure Button1Click(Sender: TObject);
     procedure LBAllWordClick(Sender: TObject);
     procedure LBAllWordTranslateClick(Sender: TObject);
@@ -40,6 +42,8 @@ type
     procedure Button8Click(Sender: TObject);
     procedure Button7Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
+    procedure CbLangDblClick(Sender: TObject);
+    procedure Edit2DblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -114,6 +118,7 @@ begin
   MemWord.Clear;
   MemWordTranslate.Clear;
 
+  SaveDic;
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -132,6 +137,8 @@ begin
   LBAllWord.Items.Strings[LBAllWord.ItemIndex] := MemWord.Text;
   LBAllWordTranslate.Items.Strings[LBAllWordTranslate.ItemIndex] :=
     MemWordTranslate.Text;
+
+  SaveDic;
 end;
 
 procedure TForm1.Button3Click(Sender: TObject);
@@ -143,6 +150,8 @@ procedure TForm1.Button4Click(Sender: TObject);
 begin
   LBAllWord.Items.Delete(LBAllWord.ItemIndex);
   LBAllWordTranslate.Items.Delete(LBAllWordTranslate.ItemIndex);
+
+  SaveDic;
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);
@@ -153,7 +162,11 @@ end;
 
 procedure TForm1.Button6Click(Sender: TObject);
 begin
-  CbLang.Items.Strings[CbLang.ItemIndex] := CbLang.Text;
+  if not Edit2.Visible then
+    Exit;
+  CbLang.Items.Strings[CbLang.ItemIndex] := Edit2.Text;
+  CbLang.Visible := true;
+  Edit2.Visible := False;
   ShowMessage('Modified');
 end;
 
@@ -166,9 +179,8 @@ end;
 procedure TForm1.Button8Click(Sender: TObject);
 begin
   CbLang.Items.Add('Lang' + (CbLang.Items.Count + 1).ToString);
-  CbLang.ItemIndex := CbLang.Items.Count - 1
-
-    ShowMessage('Added');
+  CbLang.ItemIndex := CbLang.Items.Count - 1;
+  ShowMessage('Added');
 end;
 
 procedure TForm1.Button9Click(Sender: TObject);
@@ -179,6 +191,19 @@ end;
 procedure TForm1.CbLangChange(Sender: TObject);
 begin
   LoadLang;
+end;
+
+procedure TForm1.CbLangDblClick(Sender: TObject);
+begin
+  CbLang.Visible := False;
+  Edit2.Visible := true;
+  Edit2.Text := CbLang.Text;
+end;
+
+procedure TForm1.Edit2DblClick(Sender: TObject);
+begin
+  CbLang.Visible := true;
+  Edit2.Visible := False;
 end;
 
 procedure TForm1.LBAllWordClick(Sender: TObject);
@@ -223,6 +248,7 @@ begin
           try
             IniMem.ReadSections(CbLang.Items);
             CbLang.ItemIndex := 0;
+            LoadLang;
           finally
             IniMem.Free;
           end;

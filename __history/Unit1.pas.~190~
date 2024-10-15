@@ -118,6 +118,7 @@ begin
   MemWord.Clear;
   MemWordTranslate.Clear;
 
+  SaveDic;
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -157,7 +158,11 @@ end;
 
 procedure TForm1.Button6Click(Sender: TObject);
 begin
-  CbLang.Items.Strings[CbLang.ItemIndex] := CbLang.Text;
+  if not Edit2.Visible then
+    Exit;
+  CbLang.Items.Strings[CbLang.ItemIndex] := Edit2.Text;
+  CbLang.Visible := true;
+  Edit2.Visible := False;
   ShowMessage('Modified');
 end;
 
@@ -187,12 +192,13 @@ end;
 procedure TForm1.CbLangDblClick(Sender: TObject);
 begin
   CbLang.Visible := False;
-  Edit2.Visible := True;
+  Edit2.Visible := true;
+  Edit2.Text := CbLang.Text;
 end;
 
 procedure TForm1.Edit2DblClick(Sender: TObject);
 begin
-  CbLang.Visible := True;
+  CbLang.Visible := true;
   Edit2.Visible := False;
 end;
 
