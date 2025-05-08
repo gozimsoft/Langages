@@ -98,6 +98,7 @@ object Form1: TForm1
         '')
       ScrollBars = ssBoth
       TabOrder = 0
+      OnKeyPress = MemWordKeyPress
     end
     object MemWordTranslate: TMemo
       AlignWithMargins = True
@@ -195,17 +196,6 @@ object Form1: TForm1
       Caption = 'Add'
       TabOrder = 2
       OnClick = Button8Click
-    end
-    object Button3: TButton
-      AlignWithMargins = True
-      Left = 246
-      Top = 3
-      Width = 75
-      Height = 35
-      Align = alLeft
-      Caption = 'Save Dic'
-      TabOrder = 3
-      OnClick = Button3Click
     end
   end
   object Panel5: TPanel

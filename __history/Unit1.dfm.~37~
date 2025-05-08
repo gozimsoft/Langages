@@ -18,28 +18,24 @@ object Form1: TForm1
   object LBAllWord: TListBox
     AlignWithMargins = True
     Left = 3
-    Top = 148
+    Top = 156
     Width = 350
-    Height = 375
+    Height = 367
     Align = alLeft
     ItemHeight = 13
     TabOrder = 0
     OnClick = LBAllWordClick
-    ExplicitTop = 233
-    ExplicitHeight = 368
   end
   object LBAllWordTranslate: TListBox
     AlignWithMargins = True
     Left = 359
-    Top = 148
+    Top = 156
     Width = 350
-    Height = 375
+    Height = 367
     Align = alLeft
     ItemHeight = 13
     TabOrder = 1
     OnClick = LBAllWordTranslateClick
-    ExplicitTop = 205
-    ExplicitHeight = 401
   end
   object Edit1: TEdit
     AlignWithMargins = True
@@ -51,7 +47,6 @@ object Form1: TForm1
     Color = clScrollBar
     ReadOnly = True
     TabOrder = 2
-    ExplicitWidth = 713
   end
   object Panel1: TPanel
     Left = 0
@@ -61,7 +56,6 @@ object Form1: TForm1
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitWidth = 719
     object Button1: TButton
       AlignWithMargins = True
       Left = 84
@@ -72,7 +66,6 @@ object Form1: TForm1
       Caption = 'Load Dic'
       TabOrder = 0
       OnClick = Button1Click
-      ExplicitLeft = 3
     end
     object Button9: TButton
       AlignWithMargins = True
@@ -84,7 +77,6 @@ object Form1: TForm1
       Caption = 'New Dic'
       TabOrder = 1
       OnClick = Button9Click
-      ExplicitLeft = -28
     end
   end
   object Panel2: TPanel
@@ -95,10 +87,7 @@ object Form1: TForm1
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 4
-    ExplicitLeft = 8
-    ExplicitTop = 577
-    ExplicitWidth = 719
-    object Memo1: TMemo
+    object MemWord: TMemo
       AlignWithMargins = True
       Left = 3
       Top = 3
@@ -109,8 +98,9 @@ object Form1: TForm1
         '')
       ScrollBars = ssBoth
       TabOrder = 0
+      OnKeyPress = MemWordKeyPress
     end
-    object Memo2: TMemo
+    object MemWordTranslate: TMemo
       AlignWithMargins = True
       Left = 359
       Top = 3
@@ -131,8 +121,6 @@ object Form1: TForm1
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 5
-    ExplicitLeft = -2
-    ExplicitTop = 300
     object Button2: TButton
       AlignWithMargins = True
       Left = 84
@@ -167,37 +155,15 @@ object Form1: TForm1
       OnClick = Button5Click
     end
   end
-  object CbLang: TComboBox
-    AlignWithMargins = True
-    Left = 3
-    Top = 68
-    Width = 715
-    Height = 27
-    Align = alTop
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 6
-    OnChange = CbLangChange
-    ExplicitLeft = 35
-    ExplicitTop = 51
-    ExplicitWidth = 713
-  end
   object Panel4: TPanel
     AlignWithMargins = True
     Left = 3
-    Top = 101
+    Top = 109
     Width = 715
     Height = 41
     Align = alTop
     BevelOuter = bvNone
-    TabOrder = 7
-    ExplicitLeft = -2
-    ExplicitTop = 71
-    ExplicitWidth = 713
+    TabOrder = 6
     object Button6: TButton
       AlignWithMargins = True
       Left = 84
@@ -207,6 +173,7 @@ object Form1: TForm1
       Align = alLeft
       Caption = 'Edit'
       TabOrder = 0
+      OnClick = Button6Click
     end
     object Button7: TButton
       AlignWithMargins = True
@@ -217,6 +184,7 @@ object Form1: TForm1
       Align = alLeft
       Caption = 'Delete'
       TabOrder = 1
+      OnClick = Button7Click
     end
     object Button8: TButton
       AlignWithMargins = True
@@ -227,6 +195,7 @@ object Form1: TForm1
       Align = alLeft
       Caption = 'Add'
       TabOrder = 2
+      OnClick = Button8Click
     end
     object Button3: TButton
       AlignWithMargins = True
@@ -238,8 +207,50 @@ object Form1: TForm1
       Caption = 'Save Dic'
       TabOrder = 3
       OnClick = Button3Click
-      ExplicitLeft = 348
-      ExplicitTop = 0
+    end
+  end
+  object Panel5: TPanel
+    Left = 0
+    Top = 65
+    Width = 721
+    Height = 41
+    Align = alTop
+    BevelOuter = bvNone
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 7
+    object Edit2: TEdit
+      AlignWithMargins = True
+      Left = 3
+      Top = 3
+      Width = 715
+      Height = 35
+      Align = alClient
+      TabOrder = 1
+      Visible = False
+      OnDblClick = Edit2DblClick
+      ExplicitHeight = 27
+    end
+    object CbLang: TComboBox
+      AlignWithMargins = True
+      Left = 3
+      Top = 3
+      Width = 715
+      Height = 27
+      Align = alClient
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+      OnChange = CbLangChange
+      OnDblClick = CbLangDblClick
     end
   end
 end

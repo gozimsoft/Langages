@@ -25,7 +25,6 @@ type
     Button6: TButton;
     Button7: TButton;
     Button8: TButton;
-    Button3: TButton;
     Button9: TButton;
     Panel5: TPanel;
     CbLang: TComboBox;
@@ -36,7 +35,6 @@ type
     procedure Button2Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
     procedure CbLangChange(Sender: TObject);
     procedure Button9Click(Sender: TObject);
     procedure Button8Click(Sender: TObject);
@@ -44,6 +42,7 @@ type
     procedure Button6Click(Sender: TObject);
     procedure CbLangDblClick(Sender: TObject);
     procedure Edit2DblClick(Sender: TObject);
+    procedure MemWordKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -98,7 +97,8 @@ begin
 
   for I := 0 to LBAllWord.Items.Count - 1 do
   begin
-    if LBAllWord.Items.Strings[I] = MemWord.Text then
+    if UpperCase(LBAllWord.Items.Strings[I]) = UpperCase(Trim(MemWord.Text))
+    then
     begin
       ShowMessage('„ ﬂ——');
       Exit;
@@ -118,6 +118,7 @@ begin
   MemWord.Clear;
   MemWordTranslate.Clear;
 
+  SaveDic;
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -136,10 +137,7 @@ begin
   LBAllWord.Items.Strings[LBAllWord.ItemIndex] := MemWord.Text;
   LBAllWordTranslate.Items.Strings[LBAllWordTranslate.ItemIndex] :=
     MemWordTranslate.Text;
-end;
 
-procedure TForm1.Button3Click(Sender: TObject);
-begin
   SaveDic;
 end;
 
@@ -147,30 +145,41 @@ procedure TForm1.Button4Click(Sender: TObject);
 begin
   LBAllWord.Items.Delete(LBAllWord.ItemIndex);
   LBAllWordTranslate.Items.Delete(LBAllWordTranslate.ItemIndex);
+
+  SaveDic;
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);
 begin
   AddWord;
-
 end;
 
 procedure TForm1.Button6Click(Sender: TObject);
 begin
-  CbLang.Items.Strings[CbLang.ItemIndex] := CbLang.Text;
+  if not Edit2.Visible then
+    Exit;
+  CbLang.Items.Strings[CbLang.ItemIndex] := Edit2.Text;
+  CbLang.Visible := true;
+  Edit2.Visible := False;
   ShowMessage('Modified');
 end;
 
 procedure TForm1.Button7Click(Sender: TObject);
 begin
-  CbLang.Items.Delete(CbLang.ItemIndex);
-  ShowMessage('Deleted');
+  if MessageDlg('„ «ﬂœ „‰ ⁄„·Ì… «·Õ–›', mtWarning, mbYesNo, 0) = mrYes then
+  begin
+    CbLang.Items.Delete(CbLang.ItemIndex);
+    ShowMessage('Deleted');
+    SaveDic;
+  end;
+
 end;
 
 procedure TForm1.Button8Click(Sender: TObject);
 begin
   CbLang.Items.Add('Lang' + (CbLang.Items.Count + 1).ToString);
   CbLang.ItemIndex := CbLang.Items.Count - 1;
+  SaveDic;
   ShowMessage('Added');
 end;
 
@@ -187,13 +196,13 @@ end;
 procedure TForm1.CbLangDblClick(Sender: TObject);
 begin
   CbLang.Visible := False;
-  Edit2.Visible := True;
+  Edit2.Visible := true;
   Edit2.Text := CbLang.Text;
 end;
 
 procedure TForm1.Edit2DblClick(Sender: TObject);
 begin
-  CbLang.Visible := True;
+  CbLang.Visible := true;
   Edit2.Visible := False;
 end;
 
@@ -239,6 +248,7 @@ begin
           try
             IniMem.ReadSections(CbLang.Items);
             CbLang.ItemIndex := 0;
+            LoadLang;
           finally
             IniMem.Free;
           end;
@@ -264,13 +274,26 @@ begin
 
   LBAllWord.Clear;
   LBAllWordTranslate.Clear;
+
   IniMem := TMemIniFile.Create(Edit1.Text);
   try
+
     IniMem.ReadSection(CbLang.Text, LBAllWord.Items);
     for I := 0 to LBAllWord.Items.Count - 1 do
     begin
-      LBAllWordTranslate.Items.Add(IniMem.ReadString(CbLang.Text,
-        LBAllWord.Items.Strings[I], ''));
+      LBAllWord.Items.Strings[I] := StringReplace(LBAllWord.Items.Strings[I],
+        '#10#13', sLineBreak, [rfReplaceAll]);
+    end;
+
+    for I := 0 to LBAllWord.Items.Count - 1 do
+    begin
+
+      // LBAllWordTranslate.Items.Add(
+      // IniMem.ReadString(CbLang.Text,LBAllWord.Items.Strings[I], ''));
+
+      LBAllWordTranslate.Items.Add(StringReplace(IniMem.ReadString(CbLang.Text,
+        LBAllWord.Items.Strings[I], ''), '#10#13', sLineBreak, [rfReplaceAll]));
+
     end;
   finally
     IniMem.Free;
@@ -278,6 +301,28 @@ begin
 
   MemWord.Text := '';
   MemWordTranslate.Text := '';
+end;
+
+procedure TForm1.MemWordKeyPress(Sender: TObject; var Key: Char);
+var
+  str: string;
+  I: Integer;
+begin
+  if Key = #13 then
+  begin
+    str := Trim(MemWord.Text);
+    if str <> EmptyStr then
+
+      for I := 0 to LBAllWord.Items.Count - 1 do
+        if UpperCase(str) = UpperCase(LBAllWord.Items.Strings[I]) then
+        begin
+          LBAllWord.ItemIndex := I;
+          ShowMessage('„ ﬂ——');
+          Break;
+        end;
+
+  end;
+
 end;
 
 procedure TForm1.NewDic;
@@ -332,13 +377,26 @@ procedure TForm1.SaveDic;
 var
   str: TStrings;
   I: Integer;
+  Key, Value: string;
 begin
   str := TStringList.Create;
   try
     for I := 0 to LBAllWord.Items.Count - 1 do
-      str.Add(LBAllWord.Items.Strings[I] + '=' +
-        LBAllWordTranslate.Items.Strings[I]);
+    begin
+      // str.Add(LBAllWord.Items.Strings[I] + '=' +
+      // LBAllWordTranslate.Items.Strings[I]   );
+
+      Key := LBAllWord.Items.Strings[I];
+      Value := LBAllWordTranslate.Items.Strings[I];
+
+      Key := StringReplace(Key, sLineBreak, '#10#13', [rfReplaceAll])Key :=
+        StringReplace(Value, sLineBreak, '#10#13', [rfReplaceAll])
+        str.Add(Key + '=' + Value);
+
+    end;
+
     ReplaceOrAddSection(Edit1.Text, CbLang.Text, str);
+
   finally
     str.Free;
   end;
