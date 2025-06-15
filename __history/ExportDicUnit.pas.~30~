@@ -1,0 +1,134 @@
+﻿unit ExportDicUnit;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, System.Generics.Collections,
+  Vcl.Controls, Vcl.Forms, Vcl.FileCtrl, Vcl.Dialogs, StrUtils,
+  Vcl.StdCtrls, fs_idialogsrtti, System.RegularExpressions;
+
+type
+  TFrmExportDic = class(TForm)
+    Button1: TButton;
+    Edit1: TEdit;
+    Memo1: TMemo;
+    Button2: TButton;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+  private
+    procedure ExtractUniqueTranslatableValues(const Folder: string;
+      Memo: TMemo);
+    function IsPureText(const Input: string): Boolean;
+
+  public
+    procedure SaveFile;
+  end;
+
+var
+  FrmExportDic: TFrmExportDic;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  System.IOUtils, System.Types;
+
+procedure TFrmExportDic.ExtractUniqueTranslatableValues(const Folder: string;
+  Memo: TMemo);
+var
+  Files: TStringDynArray;
+  FileContent: TStringList;
+  Line: string;
+  LineNum: Integer;
+  FileName: string;
+  PropertiesToExtract: array of string;
+  Prop, Value: string;
+  UniqueValues: TDictionary<string, Boolean>;
+begin
+  Memo.Clear;
+  Files := TDirectory.GetFiles(Folder, '*.dfm', TSearchOption.soAllDirectories);
+
+  PropertiesToExtract := ['Caption', 'Text', 'Hint', 'Title', 'Label', 'Prompt',
+    'HelpText'];
+  UniqueValues := TDictionary<string, Boolean>.Create;
+
+  try
+    for FileName in Files do
+    begin
+      FileContent := TStringList.Create;
+      try
+        FileContent.LoadFromFile(FileName);
+        for LineNum := 0 to FileContent.Count - 1 do
+        begin
+          Line := Trim(FileContent[LineNum]);
+          for Prop in PropertiesToExtract do
+          begin
+            if StartsText(Prop + ' =', Line) then
+            begin
+              Value := Trim(StringReplace(Line, Prop + ' =', '', []));
+              Value := StringReplace(Value, '"', '', [rfReplaceAll]);
+              Value := StringReplace(Value, '''', '', [rfReplaceAll]);
+              Value := StringReplace(Value, '#39', '''', [rfReplaceAll]);
+              Value := Trim(Value);
+              if Value.StartsWith('&') then
+                Delete(Value, 1, 1);
+              if Value.EndsWith('&') then
+                Delete(Value, Length(Value), 1);
+              if IsPureText(Value) then
+                if (Value <> '') and (not UniqueValues.ContainsKey(Value)) then
+                begin
+                  Value = Value + '=' + Value;
+                  UniqueValues.Add(Value, True);
+                end;
+            end;
+          end;
+        end;
+      finally
+        FileContent.Free;
+      end;
+    end;
+
+    for Value in UniqueValues.Keys do
+      Memo.Lines.Add(Value);
+
+  finally
+    UniqueValues.Free;
+  end;
+end;
+
+procedure TFrmExportDic.Button1Click(Sender: TObject);
+var
+  Folder: string;
+begin
+  if SelectDirectory('اختر مجلد', '', Folder) then
+  begin
+    ExtractUniqueTranslatableValues(Folder, Memo1);
+  end;
+end;
+
+procedure TFrmExportDic.Button2Click(Sender: TObject);
+begin
+  SaveFile;
+end;
+
+function TFrmExportDic.IsPureText(const Input: string): Boolean;
+begin
+  Result := TRegEx.IsMatch(Input, '^[A-Za-zÀ-ÿ\s]+$');
+end;
+
+procedure TFrmExportDic.SaveFile;
+begin
+  with TSaveDialog.Create(Self) do
+    try
+      if Execute then
+      begin
+        Memo1.Lines.SaveToFile(FileName);
+      end;
+    finally
+      Free;
+    end;
+end;
+
+end.

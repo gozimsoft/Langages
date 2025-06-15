@@ -2,13 +2,15 @@ program Dictionary;
 
 uses
   Vcl.Forms,
-  Unit1 in 'Unit1.pas' {Form1};
+  MainUnit in 'MainUnit.pas' {FrmMain},
+  ExportDicUnit in 'ExportDicUnit.pas' {FrmExportDic};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TFrmMain, FrmMain);
+  Application.CreateForm(TFrmExportDic, FrmExportDic);
   Application.Run;
 end.
